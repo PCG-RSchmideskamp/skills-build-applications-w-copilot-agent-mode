@@ -1,4 +1,9 @@
+import { hasCodespaceName } from '../api.js'
 import ResourceTable from './ResourceTable.jsx'
+
+const endpoint = hasCodespaceName
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/'
 
 const columns = [
   { label: 'Type', render: (a) => a.type },
@@ -8,7 +13,7 @@ const columns = [
 ]
 
 function Activities() {
-  return <ResourceTable title="Activities" component="activities" columns={columns} />
+  return <ResourceTable title="Activities" endpoint={endpoint} columns={columns} />
 }
 
 export default Activities

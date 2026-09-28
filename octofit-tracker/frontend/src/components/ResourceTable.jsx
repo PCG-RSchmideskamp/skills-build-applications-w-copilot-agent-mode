@@ -1,15 +1,14 @@
-import { getEndpoint } from '../api.js'
 import { useResource } from '../useResource.js'
 
-function ResourceTable({ title, component, columns }) {
-  const { items, loading, error } = useResource(component)
+function ResourceTable({ title, endpoint, columns }) {
+  const { items, loading, error } = useResource(endpoint)
 
   return (
     <div className="card shadow-sm">
       <div className="card-body">
         <h2 className="card-title h4">{title}</h2>
         <p className="text-muted small mb-3">
-          Endpoint: <code>{getEndpoint(component)}</code>
+          Endpoint: <code>{endpoint}</code>
         </p>
 
         {loading && <div className="spinner-border text-primary" role="status" aria-label="Loading" />}

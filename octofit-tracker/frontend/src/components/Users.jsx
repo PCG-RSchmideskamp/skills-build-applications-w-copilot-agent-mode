@@ -1,4 +1,9 @@
+import { hasCodespaceName } from '../api.js'
 import ResourceTable from './ResourceTable.jsx'
+
+const endpoint = hasCodespaceName
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/'
 
 const columns = [
   { label: 'Name', render: (u) => u.name },
@@ -6,7 +11,7 @@ const columns = [
 ]
 
 function Users() {
-  return <ResourceTable title="Users" component="users" columns={columns} />
+  return <ResourceTable title="Users" endpoint={endpoint} columns={columns} />
 }
 
 export default Users

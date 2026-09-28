@@ -1,13 +1,5 @@
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
-
-// Without VITE_CODESPACE_NAME, fall back to the local API instead of https://undefined-8000...
-export const apiBaseUrl = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev/api`
-  : 'http://localhost:8000/api'
-
-export function getEndpoint(component) {
-  return `${apiBaseUrl}/${component}/`
-}
+// Without VITE_CODESPACE_NAME, components fall back to the local API instead of https://undefined-8000...
+export const hasCodespaceName = Boolean(import.meta.env.VITE_CODESPACE_NAME?.trim())
 
 // Accepts plain arrays, paginated `{ results: [...] }`, or `{ data: [...] }` payloads.
 export function normalizeList(payload) {
@@ -17,13 +9,12 @@ export function normalizeList(payload) {
   return []
 }
 
-export async function fetchList(component, signal) {
-  const endpoint = getEndpoint(component)
+export async function fetchList(endpoint, signal) {
   const response = await fetch(endpoint, { signal })
   if (!response.ok) {
     throw new Error(`Request to ${endpoint} failed with status ${response.status}`)
   }
   const payload = await response.json()
-  console.log(`Fetched ${component} from ${endpoint}`, payload)
+  console.log(`Fetched ${endpoint}`, payload)
   return normalizeList(payload)
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchList } from './api.js'
 
-export function useResource(component) {
+export function useResource(endpoint) {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -11,7 +11,7 @@ export function useResource(component) {
     setLoading(true)
     setError(null)
 
-    fetchList(component, controller.signal)
+    fetchList(endpoint, controller.signal)
       .then(setItems)
       .catch((err) => {
         if (err.name !== 'AbortError') setError(err.message)
@@ -21,7 +21,7 @@ export function useResource(component) {
       })
 
     return () => controller.abort()
-  }, [component])
+  }, [endpoint])
 
   return { items, loading, error }
 }
