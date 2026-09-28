@@ -1,15 +1,17 @@
 import express from 'express';
+import { apiBaseUrl, port } from './config/api';
 import './config/database';
+import apiRouter from './routes';
 
 const app = express();
-const port = 8000;
 
 app.use(express.json());
+app.use('/api', apiRouter);
 
 app.get('/api/health', (_request, response) => {
-  response.json({ status: 'ok' });
+  response.json({ status: 'ok', url: apiBaseUrl });
 });
 
 app.listen(port, () => {
-  console.log(`OctoFit API listening on port ${port}`);
+  console.log(`OctoFit API listening at ${apiBaseUrl}`);
 });
